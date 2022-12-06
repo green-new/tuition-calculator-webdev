@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css" />
+        <script type="text/javascript">
+            // https://stackoverflow.com/questions/17621515/how-to-show-and-hide-input-fields-based-on-radio-button-selection
+            function checkOrientationOption() {
+                if (document.getElementById("new-student").checked) {
+                    document.getElementById("orientation-label").style.display = 'block';
+                    document.getElementById("orientation").style.display = 'inline';
+                } else {
+                    document.getElementById("orientation-label").style.display = 'none';
+                    document.getElementById("orientation").style.display = 'none';
+                    document.getElementById("orientation").checked = false;
+                }
+            }
+            function validatePositiveNumbers() {
+                let num_credits_int = parseInt(document.forms["form"]["num_credits"].value);
+                if (num_credits_int <= 0 || num_credits_int >= 100) {
+                    alert("Number of credits is invalid!");
+                    return false;
+                }
+                // https://stackoverflow.com/questions/18082/validate-decimal-numbers-in-javascript-isnumeric
+                let input = document.forms["form"]["num_credits"].value;
+                if(!((input - 0) == input && (''+input).trim().length > 0)){
+                    alert("No letters allowed");
+                    return false;
+                }
+            }
+            function validateAlphabetFields(formName) {
+                var fields = document.forms[formName].getElementsByClassName("alphabet_field");
+                console.log(fields);
+                for (let field of fields) {
+                    if (!/^[a-zA-Z]*$/g.test(field.value)) {
+                        alert("Invalid characters for \"" + field.name + "\" field");
+                        return false;
+                    }
+                }
+            }
+        </script>
+        <meta charset=utf-8>
+        <title>Calculate Tuition</title>
+    </head>
+    <body>
+        <section id="calculator">
+            <h1>Tuition Costs Calculator</h1>
+            <form name="form" action=/calculate method=POST onsubmit="return validatePositiveNumbers() || validateAlphabetFields('form')">
+                <label>First name: <input type="text" name="first_name" class="alphabet_field" required /></label><br />
+                <label>Last name: <input type="text" name="last_name" class="alphabet_field" required /></label><br />
+                <label>Credit Hours: <input type="text" name="num_credits" id="credit-qty" required /></label><br />
+                <label>Are you a new student?: </label><input type="checkbox" name="new_student" id="new-student" onclick="checkOrientationOption();" /><br />
+                <label id="orientation-label" style="display: none">Orientation (optional): <input type="checkbox" name="orientation" id="orientation" style="display: none"/></label><br />
+                <fieldset>
+                    <legend>Residency</legend>
+                    <label><input type="radio" name="student_type" value="resident" required/>Resident Student</label><br />
+                    <label><input type="radio" name="student_type" value="nonresident" required/>Nonresident Student</label><br />
+                </fieldset><br />
+                <fieldset>
+                    <legend>Studies</legend>
+                    <label><input type="radio" name="student_studies" value="undergraduate" required />Undergraduate</label><br />
+                    <label><input type="radio" name="student_studies" value="graduate" required />Graduate</label><br />
+                </fieldset><br />
+                <input type="submit" value="Calculate" />
+            </form>
+        </section>
+        <section id="lookup">
+            <h1>User Tuition Lookup</h1> 
+            <form name="lookup_form" action=/lookup method=POST onsubmit="return validateAlphabetFields('lookup_form')">
+                <label>First name: <input type="text" name="first_name" class="alphabet_field" required /></label><br />
+                <label>Last name: <input type="text" name="last_name" class="alphabet_field" required /></label><br />
+                <input type="submit" value="Lookup User" /><br />
+            </form>
+        </section>
+    </body>
+</html>

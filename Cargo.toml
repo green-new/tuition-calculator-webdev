@@ -1,0 +1,16 @@
+[package]
+name = "application"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4"
+actix-files="0.4.0"
+serde = { version = "1", features = ["derive"] }
+handlebars = { version = "4.1.4", features = ["dir_source"] }
+sqlx = { version = "0.6.2", features = [ "runtime-actix-native-tls" , "mysql", "decimal" ] }
+dotenvy="0.15.6"
+rust_decimal = "1.27.0"
+webbrowser = "0.8.2"
